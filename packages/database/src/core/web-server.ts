@@ -38,6 +38,11 @@ If you don't have it, please run \`openssl rand -base64 32\` to create one.
     neonConfig.webSocketConstructor = ws;
   }
 
+  if (process.env.NEXT_RUNTIME === 'edge') {
+    // Reduce reliance on WebSocket connections in Edge runtime.
+    neonConfig.poolQueryViaFetch = true;
+  }
+
   const client = new NeonPool({ connectionString });
   return neonDrizzle(client, { schema });
 };
